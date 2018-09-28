@@ -1,0 +1,1 @@
+exports.insert = require("./insert");

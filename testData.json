@@ -1,0 +1,44 @@
+{
+    "server": "https://yahoo.com",
+    "layers": [
+    {
+        "url": "https://google.com",
+        "currentVersion": 10.31,
+        "id": 11,
+        "name": "Wetland (1990 SAO)",
+        "type": "Feature Layer",
+        "description": "The Sensitive Areas Ordinance (SAO) defines wetlands as those areas of King County that are inundated or saturated by ground or surface water at a frequency and duration sufficient to support, and under normal circumstance do support, a prevalence of vegetation typically adapted for life in saturated soil conditions. Where the vegetation has been removed or substantially altered, a wetland shall be determined by the presence or evidence of hydric or organic soil, or by documentation, such as aerial photographs, of the previous existence of wetland vegetation. This definition is the same as that used by the U.S. Army Corps of Engineers pursuant to Section 404 of the federal Clean Water Act.",
+        "geometryType": "esriGeometryPolygon",
+        "defaultVisibility": true,
+        "extent": {
+         "xmin": -1.36957721155655357,
+         "ymin": 5897601.423676391,
+         "xmax": -1.34779498986529137,
+         "ymax": 6158040.514031464,
+         "spatialReference": {
+          "wkid": 102100,
+          "latestWkid": 3857
+         }
+        },
+        "capabilities": "Map,Query,Data",
+        "maxRecordCount": 1000,
+        "supportsStatistics": true,
+        "supportsAdvancedQueries": true,
+        "hasZ": true,
+        "hasM": true,
+        "supportedQueryFormats": "JSON, AMF",
+        "ownershipBasedAccessControlForFeatures": {"allowOthersToQuery": true},
+        "useStandardizedQueries": true,
+        "advancedQueryCapabilities": {
+         "useStandardizedQueries": true,
+         "supportsStatistics": true,
+         "supportsOrderBy": true,
+         "supportsDistinct": true,
+         "supportsPagination": false,
+         "supportsTrueCurve": true,
+         "supportsReturningQueryExtent": true,
+         "supportsQueryWithDistance": true
+        }
+       }
+    ]
+}
