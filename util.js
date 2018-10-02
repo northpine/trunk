@@ -1,6 +1,6 @@
 const REQUIRED_KEYS = ['name', 'url', 'extent', 'geometryType', 'description']
 const debug = require('debug');
-const resLog = debug("insert:response");
+const resLog = debug("response");
 
 exports.objToArray = obj => (arr, key) => {
   arr.push(obj[key]);
@@ -15,6 +15,7 @@ exports.send = (res, error, message) => {
   resLog(response);
   res.send(response);
 }
+
 /**
  * Throwing this into its own function so we can modify it easily later and potentially re-use it.
  * 
