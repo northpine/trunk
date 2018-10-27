@@ -17,7 +17,7 @@ FROM (
           FROM layers l, servers s
           WHERE parent_id = s.md5
           AND (description like $1 OR name like $1 OR l.url like $1)
-          AND ST_MakeEnvelope($2, $3, $4, $5, 4326) && extent
+          AND ST_Contains(ST_MakeEnvelope($2, $3, $4, $5, 4326), extent)
   ) inputs
 ) features;`
 
