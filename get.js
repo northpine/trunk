@@ -16,8 +16,9 @@ FROM (
           SELECT l.*, s.url AS base_url
           FROM layers l, servers s
           WHERE parent_id = s.md5
-          AND (description like $1 OR name like $1 OR l.url like $1)
-          AND ST_Contains(ST_MakeEnvelope($2, $3, $4, $5, 4326), extent)
+          AND (desc_vector @@ plainto_tsquery($1) OR name like $2 OR l.url like $2)
+          AND ST_Contains(ST_MakeEnvelope($3, $4, $5, $6, 4326), extent)
+          ORDER BY ts_rank(desc_vector, plainto_tsquery($1)) ASC
   ) inputs
 ) features;`
 
@@ -26,7 +27,7 @@ module.exports = async (req, res) => {
   try {
     debug("query: %o", req.query);
     const {phrase, xmin, ymin, xmax, ymax} = req.query;
-    const result = await pool.query(getFeatureCollectionSql, [`%${phrase}%`, xmin, ymin, xmax, ymax]);
+    const result = await pool.query(getFeatureCollectionSql, [phrase, `%${phrase}%`, xmin, ymin, xmax, ymax]);
     //We're aggregating the entire table into a single geojson collection. Therefore we only need the first row
     const featureCollection = result.rows[0].collection;
     send(res, 0, featureCollection);

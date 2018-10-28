@@ -8,10 +8,10 @@ const mapLayerToSql = (row, index) => {
     let i = (index * numKeys) + 1;
     const ex = row.extent;
     const srid = ex.spatialReference.latestWkid || ex.spatialReference.wkid;
-    const sql = `(ST_Transform(ST_MakeEnvelope($${i++},  $${i++}, $${i++}, $${i++}, $${i++}), 4326), MD5($${i++})::uuid, $${i++}::uuid, $${i++}, $${i++}, $${i++}, $${i++})`
+    const sql = `(ST_Transform(ST_MakeEnvelope($${i++},  $${i++}, $${i++}, $${i++}, $${i++}), 4326), MD5($${i++})::uuid, $${i++}::uuid, $${i++}, $${i++}, $${i++}, $${i++}, to_tsvector($${i++}))`
     return {
         sql: sql,
-        values: [ex.xmin, ex.ymin, ex.xmax, ex.ymax, srid, row.url, row.parent_id, row.url, row.name, row.geometryType, row.description.substr(0, MAX_STRING_LENGTH)]
+        values: [ex.xmin, ex.ymin, ex.xmax, ex.ymax, srid, row.url, row.parent_id, row.url, row.name, row.geometryType, row.description.substr(0, MAX_STRING_LENGTH), row.description]
     }
 
 }
@@ -19,7 +19,7 @@ const mapLayerToSql = (row, index) => {
 const buildInsert = (layers, parentId) => {
     const rowsWithData = layers.map(row => {row['parent_id'] = parentId; return row}).map(mapLayerToSql);
     const values = rowsWithData.reduce((acc, row) => acc.concat(row.values), []);
-    const sql = `INSERT INTO layers(extent, md5, parent_id, url, name, geometry, description) VALUES ${rowsWithData.map(row => row.sql).join(",")} ON CONFLICT DO NOTHING`
+    const sql = `INSERT INTO layers(extent, md5, parent_id, url, name, geometry, description, desc_vector) VALUES ${rowsWithData.map(row => row.sql).join(",")} ON CONFLICT DO NOTHING`
     return {
         values: values,
         sql: sql
