@@ -16,7 +16,12 @@ CREATE TABLE layers(
     name VARCHAR(512),
     description VARCHAR(10000),
     desc_vector tsvector,
-    FOREIGN KEY (parent_id) REFERENCES servers(md5)
+    FOREIGN KEY (parent_id) REFERENCES servers(md5) ON DELETE CASCADE
+);
+
+CREATE TABLE banned_servers(
+    md5 UUID PRIMARY KEY NOT NULL,
+    url TEXT NOT NULL
 );
 
 CREATE INDEX layer_extent_index ON layers USING GIST(extent);

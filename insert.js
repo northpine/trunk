@@ -35,6 +35,11 @@ const buildDelete = (layers, parentId) => {
 
 module.exports = async (req, res) => {
   try {
+    const banned = await pool.query("SELECT url from banned_servers WHERE md5=MD5($1)::uuid", [req.body.server]);
+    if (banned.rowCount > 0) {
+      send(res, 1, "Layers will not be added because it is in the banned_servers list");
+      return;
+    }
     let layers = Object.keys(req.body.layers).reduce(objToArray(req.body.layers), []);
     layers = layers.filter(isValidLayer);
     if(layers.length > 0) {
