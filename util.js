@@ -12,7 +12,7 @@ exports.send = (res, error, message) => {
     error: error,
     message: message
   }
-  resLog(response);
+  console.log(response);
   res.send(response);
 }
 

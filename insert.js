@@ -76,6 +76,7 @@ module.exports = async (req, res) => {
       send(res, 1, "server has already been updated recently")
     }
   } catch (e) {
+    console.log("fuck");
     send(res, 1, e);
   }
 
