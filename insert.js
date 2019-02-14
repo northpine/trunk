@@ -9,6 +9,9 @@ const mapLayerToSql = (row, index) => {
   const numKeys = values.length;
   let i = (index * numKeys) + 1;
   const srid = ex.spatialReference.latestWkid || ex.spatialReference.wkid;
+  if (srid === 0) {
+    srid = 4326;
+  }
   const sql = `(ST_Transform(ST_MakeEnvelope($${i++},  $${i++}, $${i++}, $${i++}, $${i++}), 4326), MD5($${i++})::uuid, $${i++}::uuid, $${i++}, $${i++}, $${i++}, $${i++}, to_tsvector($${i++}))`
   return {
       sql: sql,
