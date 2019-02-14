@@ -11,8 +11,14 @@ const (
 	FormatJSON = "f=json"
 )
 
+// Insert is the model of an insert request
+type Insert struct {
+	Server string   `json:"server"`
+	Layers []*Layer `json:"layers"`
+}
+
 type urlSetter struct {
-	URL url.URL
+	URL url.URL `json:"URL,omitempty"`
 }
 
 func (u *urlSetter) SetURL(URL url.URL) {
@@ -211,6 +217,7 @@ func (s *Service) Extract(req url.URL) {
 // Layer represents a layer object returned from ESRI
 type Layer struct {
 	urlSetter
+	DisplayURL     string      `json:"url"`
 	CurrentVersion float64     `json:"currentVersion"`
 	ID             int         `json:"id"`
 	Name           string      `json:"name"`
