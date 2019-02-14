@@ -4,15 +4,16 @@ const {objToArray, isValidLayer, send} = require('./util');
 const MAX_STRING_LENGTH = 5000;
 
 const mapLayerToSql = (row, index) => {
-    const numKeys = 11;
-    let i = (index * numKeys) + 1;
-    const ex = row.extent;
-    const srid = ex.spatialReference.latestWkid || ex.spatialReference.wkid;
-    const sql = `(ST_Transform(ST_MakeEnvelope($${i++},  $${i++}, $${i++}, $${i++}, $${i++}), 4326), MD5($${i++})::uuid, $${i++}::uuid, $${i++}, $${i++}, $${i++}, $${i++}, to_tsvector($${i++}))`
-    return {
-        sql: sql,
-        values: [ex.xmin, ex.ymin, ex.xmax, ex.ymax, srid, row.url, row.parent_id, row.url, row.name, row.geometryType, row.description.substr(0, MAX_STRING_LENGTH), row.description]
-    }
+  let values = [ex.xmin, ex.ymin, ex.xmax, ex.ymax, srid, row.url, row.parent_id, row.url, row.name, row.geometryType, row.description.substr(0, MAX_STRING_LENGTH), row.description]
+  const numKeys = values.length;
+  let i = (index * numKeys) + 1;
+  const ex = row.extent;
+  const srid = ex.spatialReference.latestWkid || ex.spatialReference.wkid;
+  const sql = `(ST_Transform(ST_MakeEnvelope($${i++},  $${i++}, $${i++}, $${i++}, $${i++}), 4326), MD5($${i++})::uuid, $${i++}::uuid, $${i++}, $${i++}, $${i++}, $${i++}, to_tsvector($${i++}))`
+  return {
+      sql: sql,
+      values: values
+  }
 
 }
 
@@ -62,11 +63,11 @@ module.exports = async (req, res) => {
         });
         if(layers.length > 0) {
           const insertWithData = buildInsert(layers, parentId);
-          debug("sql: %s", insertWithData.sql);
+          console.log("sql: %s", insertWithData.sql);
           result = await pool.query(insertWithData.sql, insertWithData.values);
-          debug("inserted successfully");
+          console.log("inserted successfully");
         } else {
-          debug("no new layers for server: " + req.body.server);
+          console.log("no new layers for server: " + req.body.server);
         }
         send(res, 0, "success!");
       } else {
@@ -76,7 +77,7 @@ module.exports = async (req, res) => {
       send(res, 1, "server has already been updated recently")
     }
   } catch (e) {
-    console.log("fuck");
+    console.log("Failed somewhere :/");
     send(res, 1, e);
   }
 
