@@ -1,0 +1,30 @@
+{
+ "currentVersion": 10.31,
+ "folders": [],
+ "services": [
+  {
+   "name": "Property/KingCo_FarmlandPreservationProgram",
+   "type": "MapServer"
+  },
+  {
+   "name": "Property/KingCo_ParcelLabels",
+   "type": "MapServer"
+  },
+  {
+   "name": "Property/KingCo_Parcels",
+   "type": "MapServer"
+  },
+  {
+   "name": "Property/KingCo_PropertyInfo",
+   "type": "MapServer"
+  },
+  {
+   "name": "Property/KingCo_PublicBenefitRatingSystem02",
+   "type": "MapServer"
+  },
+  {
+   "name": "Property/KingCo_PublicBenefitRatingSystem",
+   "type": "MapServer"
+  }
+ ]
+}

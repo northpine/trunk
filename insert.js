@@ -8,7 +8,7 @@ const mapLayerToSql = (row, index) => {
     let i = (index * numKeys) + 1;
     const ex = row.extent;
     const srid = ex.spatialReference.latestWkid || ex.spatialReference.wkid;
-    const sql = `(ST_Transform(ST_MakeEnvelope($${i++},  $${i++}, $${i++}, $${i++}, $${i++}), 4326), MD5($${i++})::uuid, $${i++}::uuid, $${i++}, $${i++}, $${i++}, $${i++}, to_tsvector($${i++}))`
+    const sql = `(ST_Transform(ST_MakeEnvelope($${i++}::numeric,  $${i++}::numeric, $${i++}::numeric, $${i++}::numeric, $${i++}::integer), 4326), MD5($${i++})::uuid, $${i++}::uuid, $${i++}, $${i++}, $${i++}, $${i++}, to_tsvector($${i++}))`
     return {
         sql: sql,
         values: [ex.xmin, ex.ymin, ex.xmax, ex.ymax, srid, row.url, row.parent_id, row.url, row.name, row.geometryType, row.description.substr(0, MAX_STRING_LENGTH), row.description]
@@ -41,6 +41,8 @@ module.exports = async (req, res) => {
       return;
     }
     let layers = Object.keys(req.body.layers).reduce(objToArray(req.body.layers), []);
+    console.log("HELP ME");
+    console.log("WHY DONT YOU LOVE ME")
     layers = layers.filter(isValidLayer);
     if(layers.length > 0) {
       let result = await pool.query("SELECT * FROM servers WHERE md5=MD5($1)::uuid AND current_timestamp < last_updated + '1 second'::interval", [req.body.server])
