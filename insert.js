@@ -4,10 +4,10 @@ const {objToArray, isValidLayer, send} = require('./util');
 const MAX_STRING_LENGTH = 5000;
 
 const mapLayerToSql = (row, index) => {
+  const ex = row.extent;
   let values = [ex.xmin, ex.ymin, ex.xmax, ex.ymax, srid, row.url, row.parent_id, row.url, row.name, row.geometryType, row.description.substr(0, MAX_STRING_LENGTH), row.description]
   const numKeys = values.length;
   let i = (index * numKeys) + 1;
-  const ex = row.extent;
   const srid = ex.spatialReference.latestWkid || ex.spatialReference.wkid;
   const sql = `(ST_Transform(ST_MakeEnvelope($${i++},  $${i++}, $${i++}, $${i++}, $${i++}), 4326), MD5($${i++})::uuid, $${i++}::uuid, $${i++}, $${i++}, $${i++}, $${i++}, to_tsvector($${i++}))`
   return {
