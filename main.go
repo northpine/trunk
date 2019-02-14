@@ -54,6 +54,9 @@ func main() {
 			if err != nil {
 				return
 			}
+			if len(layers) == 0 {
+				return
+			}
 			for _, layer := range layers {
 				layer.URL.RawQuery = ""
 				layer.DisplayURL = layer.URL.String()
@@ -63,6 +66,7 @@ func main() {
 				Layers: layers,
 			}
 			body, _ := json.Marshal(insert)
+
 			buffer := bytes.NewBuffer(body)
 			resp, err := http.Post("https://pine.center/insert", "application/json", buffer)
 			if err != nil {
