@@ -25,7 +25,7 @@ func main() {
 	f, _ := os.Open("/Users/myles/output.csv")
 	s := bufio.NewScanner(f)
 	client := http.Client{
-		Timeout: 2 * time.Minute,
+		Timeout: 1 * time.Minute,
 		Transport: &http.Transport{
 			TLSClientConfig: &tls.Config{
 				InsecureSkipVerify: true,
