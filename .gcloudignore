@@ -1,8 +1,0 @@
-.gcloudignore
-.git
-.gitignore
-testData.json
-node_modules
-trunk.sql
-README.md
-yarn-error.log
